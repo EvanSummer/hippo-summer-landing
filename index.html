@@ -446,6 +446,15 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
 
+        .static-map .copy-btn {
+            background: linear-gradient(135deg, var(--success) 0%, #1e7e34 100%);
+            color: var(--white);
+        }
+
+        .static-map .copy-btn:active {
+            background: linear-gradient(135deg, #218838 0%, #19692c 100%);
+        }
+
         /* CTA */
         .cta-section {
             background: linear-gradient(135deg, var(--dark) 0%, #2d2d44 100%);
@@ -964,13 +973,20 @@
                         <p class="sub">（新街桥社区党群服务中心）</p>
                     </div>
                     <div class="map-actions">
-                        <a class="map-btn" href="https://map.baidu.com/search/%E5%AE%89%E5%90%89%E7%8E%89%E5%9B%AD%E5%8C%97%E9%97%A8%20%E7%81%B5%E8%8A%9D%E8%A5%BF%E8%B7%AF153%E5%8F%B7" target="_blank">
-                            🗺️ 百度地图导航
+                        <a class="map-btn" href="https://map.baidu.com/search/%E5%AE%89%E5%90%89%E5%8E%BF%E7%81%B5%E8%8A%9D%E8%A5%BF%E8%B7%AF153%E5%8F%B7" target="_blank">
+                            🗺️ 百度地图
                         </a>
-                        <a class="map-btn" href="https://uri.amap.com/search?keyword=%E5%AE%89%E5%90%89%E7%8E%89%E5%9B%AD%E5%8C%97%E9%97%A8" target="_blank">
-                            🧭 高德地图导航
+                        <a class="map-btn" href="https://uri.amap.com/search?keyword=%E5%AE%89%E5%90%89%E5%8E%BF%E7%81%B5%E8%8A%9D%E8%A5%BF%E8%B7%AF153%E5%8F%B7" target="_blank">
+                            🧭 高德地图
                         </a>
+                        <a class="map-btn" href="https://map.qq.com/?type=0&word=%E5%AE%89%E5%90%89%E5%8E%BF%E7%81%B5%E8%8A%9D%E8%A5%BF%E8%B7%AF153%E5%8F%B7" target="_blank">
+                            🌐 腾讯地图
+                        </a>
+                        <button class="map-btn copy-btn" onclick="copyAddress()" data-address="安吉玉园北门东50米，灵芝西路153号（新街桥社区党群服务中心）">
+                            📋 复制地址
+                        </button>
                     </div>
+                    <div id="copyTip" style="display:none;margin-top:10px;color:var(--success);font-size:0.85rem;font-weight:500;">✅ 地址已复制，请打开地图APP粘贴搜索</div>
                 </div>
             </div>
         </div>
@@ -1057,6 +1073,46 @@
                 document.body.style.overflow = '';
             }
         });
+
+        // Copy address function
+        function copyAddress() {
+            const address = '安吉玉园北门东50米，灵芝西路153号（新街桥社区党群服务中心）';
+            const tip = document.getElementById('copyTip');
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(address).then(function() {
+                    showCopyTip();
+                }).catch(function() {
+                    fallbackCopy(address);
+                });
+            } else {
+                fallbackCopy(address);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showCopyTip();
+            } catch (err) {
+                alert('复制失败，请手动长按地址复制');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function showCopyTip() {
+            const tip = document.getElementById('copyTip');
+            tip.style.display = 'block';
+            setTimeout(function() {
+                tip.style.display = 'none';
+            }, 3000);
+        }
     </script>
 
 
