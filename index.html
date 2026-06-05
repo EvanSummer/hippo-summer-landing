@@ -634,8 +634,134 @@
             font-size: 0.8rem;
         }
 
+        /* Photo Wall */
+        .photo-wall-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-wall {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 8px 4px 16px;
+            cursor: grab;
+        }
+
+        .photo-wall::-webkit-scrollbar {
+            display: none;
+        }
+
+        .photo-wall:active {
+            cursor: grabbing;
+        }
+
+        .photo-wall .photo-item {
+            flex: 0 0 auto;
+            width: 280px;
+            height: 200px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .photo-wall .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+            -webkit-user-drag: none;
+        }
+
+        .photo-wall .photo-placeholder {
+            flex: 0 0 auto;
+            width: 280px;
+            height: 200px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .photo-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--dark);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: 2;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .photo-nav:hover {
+            opacity: 1;
+        }
+
+        .photo-nav-left {
+            left: 8px;
+        }
+
+        .photo-nav-right {
+            right: 8px;
+        }
+
+        .photo-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .photo-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: background 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+
+        .photo-dot.active {
+            background: var(--secondary);
+            transform: scale(1.3);
+        }
+
         /* Tablet (768px+) */
         @media (min-width: 768px) {
+            .photo-wall .photo-item {
+                width: 360px;
+                height: 260px;
+            }
+
+            .photo-wall .photo-placeholder {
+                width: 360px;
+                height: 260px;
+            }
+
+            .photo-nav {
+                width: 44px;
+                height: 44px;
+                font-size: 1.4rem;
+            }
+        }
             html {
                 font-size: 18px;
             }
@@ -992,6 +1118,62 @@
         </div>
     </div>
 
+    <!-- Photo Wall -->
+    <div class="container">
+        <div class="section">
+            <div class="section-title">
+                <h2>📸 校区风采</h2>
+                <p> swipe 左右滑动浏览更多精彩</p>
+            </div>
+            <div class="photo-wall-wrapper" id="photoWallWrapper">
+                <div class="photo-wall" id="photoWall">
+                    <!-- 照片将通过JS动态加载 -->
+                </div>
+                <div class="photo-nav photo-nav-left" id="photoNavLeft">❮</div>
+                <div class="photo-nav photo-nav-right" id="photoNavRight">❯</div>
+            </div>
+            <div class="photo-dots" id="photoDots"></div>
+        </div>
+    </div>
+
+    <!-- West Campus Address -->
+    <div class="container">
+        <div class="section">
+            <div class="section-title">
+                <h2>📍 城西校区</h2>
+                <p>另一个便捷的上课地点</p>
+            </div>
+            <div class="map-section">
+                <div class="map-info">
+                    <h3>创想家少儿素质成长规划中心（城西校区）</h3>
+                    <p class="address">浙江省湖州市安吉县灵峰街道嘉祥路225号5号楼1栋1-11号</p>
+                </div>
+                <div class="static-map">
+                    <div class="map-pin">📍</div>
+                    <div class="map-address">
+                        <h4>创想家少儿素质成长规划中心（城西校区）</h4>
+                        <p>浙江省湖州市安吉县灵峰街道嘉祥路225号5号楼1栋1-11号</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-btn" href="https://map.baidu.com/search/%E6%B5%99%E6%B1%9F%E7%9C%81%E6%B9%96%E5%B7%9E%E5%B8%82%E5%AE%89%E5%90%89%E5%8E%BBF%E5%B3%B0%E8%A1%97%E9%81%93%E5%98%89%E7%A5%A5%E8%B7%AF225%E5%8F%B7" target="_blank">
+                            🗺️ 百度地图
+                        </a>
+                        <a class="map-btn" href="https://uri.amap.com/search?keyword=%E6%B5%99%E6%B1%9F%E7%9C%81%E6%B9%96%E5%B7%9E%E5%B8%82%E5%AE%89%E5%90%89%E5%8E%BFF%E5%B3%B0%E8%A1%97%E9%81%93%E5%98%89%E7%A5%A5%E8%B7%AF225%E5%8F%B7" target="_blank">
+                            🧭 高德地图
+                        </a>
+                        <a class="map-btn" href="https://map.qq.com/?type=0&word=%E6%B5%99%E6%B1%9F%E7%9C%81%E6%B9%96%E5%B7%9E%E5%B8%82%E5%AE%89%E5%90%89%E5%8E%BFF%E5%B3%B0%E8%A1%97%E9%81%93%E5%98%89%E7%A5%A5%E8%B7%AF225%E5%8F%B7" target="_blank">
+                            🌐 腾讯地图
+                        </a>
+                        <button class="map-btn copy-btn" onclick="copyWestAddress()" data-address="浙江省湖州市安吉县灵峰街道嘉祥路225号5号楼1栋1-11号">
+                            📋 复制地址
+                        </button>
+                    </div>
+                    <div id="copyWestTip" style="display:none;margin-top:10px;color:var(--success);font-size:0.85rem;font-weight:500;">✅ 地址已复制，请打开地图APP粘贴搜索</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CTA -->
     <section class="cta-section">
         <div class="container">
@@ -1066,7 +1248,165 @@
             }
         });
         
-        // Close on Escape key
+        // Copy west address function
+        function copyWestAddress() {
+            const address = '浙江省湖州市安吉县灵峰街道嘉祥路225号5号楼1栋1-11号';
+            const tip = document.getElementById('copyWestTip');
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(address).then(function() {
+                    tip.style.display = 'block';
+                    setTimeout(function() { tip.style.display = 'none'; }, 3000);
+                }).catch(function() {
+                    fallbackCopyWest(address);
+                });
+            } else {
+                fallbackCopyWest(address);
+            }
+        }
+
+        function fallbackCopyWest(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                document.getElementById('copyWestTip').style.display = 'block';
+                setTimeout(function() { document.getElementById('copyWestTip').style.display = 'none'; }, 3000);
+            } catch (err) {
+                alert('复制失败，请手动长按地址复制');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Photo Wall
+        (function initPhotoWall() {
+            const photoWall = document.getElementById('photoWall');
+            const photoDots = document.getElementById('photoDots');
+            const photoNavLeft = document.getElementById('photoNavLeft');
+            const photoNavRight = document.getElementById('photoNavRight');
+            
+            // Define photo list - modify this array to add/remove photos
+            const photos = [
+                'images/photos/photo1.jpg',
+                'images/photos/photo2.jpg',
+                'images/photos/photo3.jpg',
+                'images/photos/photo4.jpg',
+                'images/photos/photo5.jpg'
+            ];
+
+            let loadedCount = 0;
+            let validPhotos = [];
+
+            // Try loading each photo
+            photos.forEach((src, index) => {
+                const img = new Image();
+                img.onload = function() {
+                    validPhotos.push({ src, index });
+                    loadedCount++;
+                    if (loadedCount === photos.length) {
+                        renderPhotoWall();
+                    }
+                };
+                img.onerror = function() {
+                    loadedCount++;
+                    if (loadedCount === photos.length) {
+                        renderPhotoWall();
+                    }
+                };
+                img.src = src;
+            });
+
+            function renderPhotoWall() {
+                if (validPhotos.length === 0) {
+                    photoWall.innerHTML = '<div class="photo-placeholder">📸 照片墙暂无图片</div>';
+                    return;
+                }
+
+                validPhotos.forEach((photo, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'photo-item';
+                    item.innerHTML = `<img src="${photo.src}" alt="校区照片 ${i+1}">`;
+                    photoWall.appendChild(item);
+                });
+
+                // Dots
+                validPhotos.forEach((_, i) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'photo-dot' + (i === 0 ? ' active' : '');
+                    dot.addEventListener('click', () => scrollToPhoto(i));
+                    photoDots.appendChild(dot);
+                });
+            }
+
+            let currentIndex = 0;
+            const itemWidth = 292; // 280px + 12px gap
+
+            function scrollToPhoto(index) {
+                currentIndex = Math.max(0, Math.min(index, validPhotos.length - 1));
+                photoWall.scrollTo({ left: currentIndex * itemWidth, behavior: 'smooth' });
+                updateDots();
+            }
+
+            function updateDots() {
+                const dots = photoDots.querySelectorAll('.photo-dot');
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
+
+            photoNavLeft.addEventListener('click', () => scrollToPhoto(currentIndex - 1));
+            photoNavRight.addEventListener('click', () => scrollToPhoto(currentIndex + 1));
+
+            // Touch swipe support
+            let startX = 0;
+            let isDragging = false;
+
+            photoWall.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            }, { passive: true });
+
+            photoWall.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+            }, { passive: true });
+
+            photoWall.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                const endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) scrollToPhoto(currentIndex + 1);
+                    else scrollToPhoto(currentIndex - 1);
+                }
+                isDragging = false;
+            }, { passive: true });
+
+            // Mouse drag support
+            let isMouseDown = false;
+            let scrollLeft = 0;
+            let startScrollX = 0;
+
+            photoWall.addEventListener('mousedown', (e) => {
+                isMouseDown = true;
+                startScrollX = e.pageX - photoWall.offsetLeft;
+                scrollLeft = photoWall.scrollLeft;
+            });
+
+            photoWall.addEventListener('mouseleave', () => { isMouseDown = false; });
+            photoWall.addEventListener('mouseup', () => { isMouseDown = false; });
+
+            photoWall.addEventListener('mousemove', (e) => {
+                if (!isMouseDown) return;
+                e.preventDefault();
+                const x = e.pageX - photoWall.offsetLeft;
+                const walk = (x - startScrollX) * 2;
+                photoWall.scrollLeft = scrollLeft - walk;
+            });
+        })();
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && modal.classList.contains('active')) {
                 modal.classList.remove('active');
