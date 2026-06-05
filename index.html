@@ -1288,7 +1288,7 @@
             const photoDots = document.getElementById('photoDots');
             const photoNavLeft = document.getElementById('photoNavLeft');
             const photoNavRight = document.getElementById('photoNavRight');
-            
+
             // Define photo list - modify this array to add/remove photos
             const photos = [
                 'images/photos/photo1780643194568_0.jpg',
@@ -1302,49 +1302,26 @@
                 'images/photos/photo1780643230278_8.jpg'
             ];
 
-            let loadedCount = 0;
-            let validPhotos = [];
-
-            // Try loading each photo
-            photos.forEach((src, index) => {
-                const img = new Image();
-                img.onload = function() {
-                    validPhotos.push({ src, index });
-                    loadedCount++;
-                    if (loadedCount === photos.length) {
-                        renderPhotoWall();
-                    }
-                };
-                img.onerror = function() {
-                    loadedCount++;
-                    if (loadedCount === photos.length) {
-                        renderPhotoWall();
-                    }
-                };
+            // Render photos directly with error fallback
+            photos.forEach((src, i) => {
+                const item = document.createElement('div');
+                item.className = 'photo-item';
+                const img = document.createElement('img');
                 img.src = src;
+                img.alt = '校区照片 ' + (i + 1);
+                img.loading = 'lazy';
+                img.onerror = function() {
+                    // Show placeholder on error
+                    item.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0f0f0,#e0e0e0);color:var(--gray);font-size:0.85rem;">📸 图片加载失败</div>';
+                };
+                item.appendChild(img);
+                photoWall.appendChild(item);
+
+                const dot = document.createElement('div');
+                dot.className = 'photo-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => scrollToPhoto(i));
+                photoDots.appendChild(dot);
             });
-
-            function renderPhotoWall() {
-                if (validPhotos.length === 0) {
-                    photoWall.innerHTML = '<div class="photo-placeholder">📸 照片墙暂无图片</div>';
-                    return;
-                }
-
-                validPhotos.forEach((photo, i) => {
-                    const item = document.createElement('div');
-                    item.className = 'photo-item';
-                    item.innerHTML = `<img src="${photo.src}" alt="校区照片 ${i+1}">`;
-                    photoWall.appendChild(item);
-                });
-
-                // Dots
-                validPhotos.forEach((_, i) => {
-                    const dot = document.createElement('div');
-                    dot.className = 'photo-dot' + (i === 0 ? ' active' : '');
-                    dot.addEventListener('click', () => scrollToPhoto(i));
-                    photoDots.appendChild(dot);
-                });
-            }
 
             let currentIndex = 0;
             const itemWidth = 292; // 280px + 12px gap
